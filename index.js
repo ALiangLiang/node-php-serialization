@@ -3,6 +3,7 @@
     var util=require("util")
     var bigdecimal=require("bigdecimal");
     exports.unserialize = unserialize;
+    exports.unserializeSession=unserializeSession;
     exports.serialize=serialize;
 	exports.Class=Class;
 
@@ -201,6 +202,31 @@
     function unserialize(body) {
         return unserialize_item(body).result.result;
     }
+	
+    function unserializeSession (input) {
+		return input.split(/\|/).reduce(function (output, part, index, parts) {
+			// First part = $key
+			if (index === 0) {
+				output._currKey = part;
+			}
+			// Last part = $someSerializedStuff
+			else if (index === parts.length - 1) {
+				output[output._currKey] = unserialize(part);
+				delete output._currKey;
+			}
+			// Other output = $someSerializedStuff$key
+			else {
+				var match = part.match(/^((?:.*?[;\}])+)([^;\}]+?)$/);
+				if (match) {
+					output[output._currKey] = unserialize(match[1]);
+					output._currKey = match[2];
+				} else {
+					throw new Error('Parse error on part "' + part + '"');
+				}
+			}
+			return output;
+		}, {});
+	}
 
     ///serialize;
 
