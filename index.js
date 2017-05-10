@@ -1,7 +1,7 @@
 (function(window, exports) {
     var Class=require("./Class").Class;
     var util=require("util")
-    var bigdecimal=require("bigdecimal");
+    var decimal=require("decimal");
     exports.unserialize = unserialize;
     exports.unserializeSession=unserializeSession;
     exports.serialize=serialize;
@@ -109,7 +109,7 @@
                 result={result:val,type:"integer"};
                 break;
             case 'd':    //d:<float>;
-                val = new bigdecimal.BigDecimal(buf2);
+                val = new decimal(buf2);
                 result={result:val,type:'float'};
                 break;
             case 'r':    //r:<integer>;
