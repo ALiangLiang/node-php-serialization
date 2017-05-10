@@ -20,7 +20,7 @@
     "laravel"
   ],
   "dependencies": {
-	"bigdecimal":"~0.6.1",
+	"decimal.js": "^7.2.1",
 	"util":"~0.10.3"
   },
   "devDependencies": {
