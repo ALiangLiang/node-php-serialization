@@ -57,6 +57,9 @@
                 break;
             }
             buf += c;
+	   if(string.length<counter){
+					break;
+		}
         }
         string = string.substr(buf.length + 1);
         return {result: buf, buffer: string};
@@ -153,8 +156,8 @@
                 result={result:buf2==="1", type:'boolean'};
                 break;
             default:
-                console.log(copy);
-                throw new Error("unknown token:"+type);
+                //console.log(copy);
+                //throw new Error("unknown token:"+type);
                 break;
         }
         return {result: result, buffer: buf};
@@ -176,6 +179,10 @@
             var valResult = unserialize_item(buf);
             var val=valResult.result;
             buf=valResult.buffer;
+	    if(!key && key!==0){
+				var d=1;
+				continue;
+			}
             result.__addAttr__(key,keyResult.result.type,val.result,val.type,keyResult.result.scope);
         }
         buf=buf.substr(1);
@@ -194,6 +201,10 @@
             var valResult = unserialize_item(buf);
             var val=valResult.result;
             buf=valResult.buffer;
+		if(!key && key!==0){
+				var d=1;
+				continue;
+			}	
             result.__addAttr__(key,keyResult.result.type,val.result,val.type);
         }
         buf=buf.substr(1);
@@ -221,7 +232,7 @@
 					output[output._currKey] = unserialize(match[1]);
 					output._currKey = match[2];
 				} else {
-					throw new Error('Parse error on part "' + part + '"');
+					//throw new Error('Parse error on part "' + part + '"');
 				}
 			}
 			return output;
@@ -290,7 +301,7 @@
                 if (type.substr(0,5)=="class") {
                     return util.format("C:%d:\"%s\":%d:{%s}",lenString(type)-5,type.substr(5),lenString(body),body);
                 }
-                throw new Error("Unknown type:"+type);
+               // throw new Error("Unknown type:"+type);
                 break;
         }
     }
